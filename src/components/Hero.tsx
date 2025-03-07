@@ -20,22 +20,24 @@ const Hero = () => {
   
   return (
     <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Video with Overlay */}
+      {/* Background Image with Overlay - now using a collage of sand dunes and water games */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 overflow-hidden">
-          <video 
-            className="absolute w-full h-full object-cover"
-            autoPlay 
-            loop 
-            muted 
-            playsInline
-          >
-            <source src="https://cdn.pixabay.com/vimeo/149975321/quadbike-2119.mp4?width=1280&hash=1702efe33b84ec954a15302ac8cdce2fc76a7f03" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-90" />
-          <div className="absolute inset-0 bg-primary/20" />
-        </div>
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ 
+            backgroundImage: 'url("https://images.unsplash.com/photo-1482881497185-d4a9ddbe4151?w=2000&fit=crop&q=80")',
+            filter: 'brightness(0.7)'
+          }}
+        />
+        {/* Water elements overlay */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay"
+          style={{ 
+            backgroundImage: 'url("https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=2000&fit=crop&q=80")',
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-90" />
+        <div className="absolute inset-0 bg-primary/20" />
       </div>
       
       {/* Animated Elements */}

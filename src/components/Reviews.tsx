@@ -42,8 +42,32 @@ const Reviews = () => {
       rating: 5,
       text: "We had our company outing at Thrills Fusion and it was the perfect choice! From activities to food, everything was well organized and everyone had a blast!",
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&fit=crop&q=80"
+    },
+    {
+      id: 5,
+      name: "Michael Brown",
+      rating: 5,
+      text: "The sand dunes adventure was unforgettable! Combining it with water activities made for a perfect day out. Highly recommend for thrill seekers!",
+      image: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&fit=crop&q=80"
+    },
+    {
+      id: 6,
+      name: "Jessica Lee",
+      rating: 4,
+      text: "Great place for family fun! The kids couldn't get enough of the trampolines while adults enjoyed the more adventurous activities. Will definitely return!",
+      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&fit=crop&q=80"
     }
   ];
+  
+  // Get visible reviews based on active index
+  const getVisibleReviews = () => {
+    const visibleReviews = [];
+    for (let i = 0; i < 3; i++) {
+      const index = (activeIndex + i) % reviews.length;
+      visibleReviews.push(reviews[index]);
+    }
+    return visibleReviews;
+  };
   
   // Auto-sliding functionality
   useEffect(() => {
@@ -83,50 +107,46 @@ const Reviews = () => {
           </p>
         </div>
         
-        <div className="relative max-w-5xl mx-auto">
+        <div className="relative max-w-7xl mx-auto">
           {/* Large quote icon */}
           <div className="absolute top-0 left-0 text-primary/10 -z-10">
             <Quote className="w-32 h-32" />
           </div>
           
-          {/* Reviews slider */}
-          <div className="overflow-hidden px-4 py-10">
-            <div 
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${activeIndex * 100}%)` }}
-            >
-              {reviews.map((review) => (
-                <div key={review.id} className="min-w-full px-4">
-                  <div className="glass-card rounded-2xl p-8 md:p-10 text-center">
-                    <div className="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden border-4 border-secondary/30">
-                      <img 
-                        src={review.image} 
-                        alt={review.name} 
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    
-                    <div className="flex items-center justify-center mb-6">
-                      {[...Array(5)].map((_, i) => (
-                        <Star 
-                          key={i} 
-                          className={`w-5 h-5 ${i < review.rating ? 'text-secondary fill-secondary' : 'text-gray-300'}`} 
-                        />
-                      ))}
-                    </div>
-                    
-                    <p className="text-lg md:text-xl italic mb-6">{review.text}</p>
-                    <h4 className="text-xl font-semibold">{review.name}</h4>
+          {/* Reviews slider - now showing three cards at once */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4 py-10">
+            {getVisibleReviews().map((review) => (
+              <div key={review.id} className="animate-fade-in">
+                <div className="glass-card rounded-2xl p-6 md:p-8 text-center h-full">
+                  <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden border-4 border-secondary/30">
+                    <img 
+                      src={review.image} 
+                      alt={review.name} 
+                      className="w-full h-full object-cover"
+                    />
                   </div>
+                  
+                  <div className="flex items-center justify-center mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <Star 
+                        key={i} 
+                        className={`w-4 h-4 ${i < review.rating ? 'text-secondary fill-secondary' : 'text-gray-300'}`} 
+                      />
+                    ))}
+                  </div>
+                  
+                  <p className="text-base md:text-lg italic mb-4 line-clamp-4">{review.text}</p>
+                  <h4 className="text-lg font-semibold">{review.name}</h4>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
           
           {/* Navigation arrows */}
           <button 
             onClick={handlePrev}
             className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-2 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors duration-300"
+            aria-label="Previous review"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
@@ -134,6 +154,7 @@ const Reviews = () => {
           <button 
             onClick={handleNext}
             className="absolute top-1/2 right-0 transform -translate-y-1/2 translate-x-2 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors duration-300"
+            aria-label="Next review"
           >
             <ChevronRight className="w-6 h-6" />
           </button>
@@ -148,8 +169,9 @@ const Reviews = () => {
                   setActiveIndex(index);
                 }}
                 className={`w-3 h-3 mx-1 rounded-full transition-all duration-300 ${
-                  index === activeIndex ? 'bg-primary w-8' : 'bg-primary/30'
+                  activeIndex <= index && index < activeIndex + 3 ? 'bg-primary w-8' : 'bg-primary/30'
                 }`}
+                aria-label={`Go to review ${index + 1}`}
               />
             ))}
           </div>

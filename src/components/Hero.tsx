@@ -20,13 +20,20 @@ const Hero = () => {
   
   return (
     <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image with Overlay */}
+      {/* Background Image with Overlay - now using a collage of sand dunes and water games */}
       <div className="absolute inset-0 z-0">
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{ 
-            backgroundImage: 'url("https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=2874&auto=format&fit=crop")',
-            filter: 'brightness(0.65)'
+            backgroundImage: 'url("https://images.unsplash.com/photo-1482881497185-d4a9ddbe4151?w=2000&fit=crop&q=80")',
+            filter: 'brightness(0.7)'
+          }}
+        />
+        {/* Water elements overlay */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay"
+          style={{ 
+            backgroundImage: 'url("https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=2000&fit=crop&q=80")',
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-90" />

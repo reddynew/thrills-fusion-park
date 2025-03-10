@@ -141,7 +141,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
           </button>
           <button 
             onClick={handlePaymentSuccess}
-            className="px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90"
+            className="px-4 py-2 rounded-lg bg-[#1EAEDB] text-white hover:bg-[#33C3F0]"
           >
             Confirm Payment
           </button>
@@ -153,21 +153,21 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* Visitor Information */}
-      <div>
-        <h3 className="text-lg font-medium mb-4">Visitor Information</h3>
+      <div className="bg-[#f3f3f3] p-5 rounded-lg">
+        <h3 className="text-lg font-bold text-[#1EAEDB] mb-4">Visitor Information</h3>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <label htmlFor="name" className="text-sm font-medium">
               Name <span className="text-red-500">*</span>
             </label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1EAEDB]" />
               <input
                 id="name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="pl-10 w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm"
+                className="pl-10 w-full h-10 rounded-md border border-[#1EAEDB]/20 bg-white px-3 py-2 text-sm focus:border-[#1EAEDB] focus:outline-none focus:ring-1 focus:ring-[#1EAEDB]"
                 required
               />
             </div>
@@ -178,13 +178,13 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
               Mobile Number <span className="text-red-500">*</span>
             </label>
             <div className="relative">
-              <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1EAEDB]" />
               <input
                 id="mobile"
                 type="tel"
                 value={mobile}
                 onChange={(e) => setMobile(e.target.value)}
-                className="pl-10 w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm"
+                className="pl-10 w-full h-10 rounded-md border border-[#1EAEDB]/20 bg-white px-3 py-2 text-sm focus:border-[#1EAEDB] focus:outline-none focus:ring-1 focus:ring-[#1EAEDB]"
                 required
               />
             </div>
@@ -195,13 +195,13 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
               Email (Optional)
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1EAEDB]" />
               <input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="pl-10 w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm"
+                className="pl-10 w-full h-10 rounded-md border border-[#1EAEDB]/20 bg-white px-3 py-2 text-sm focus:border-[#1EAEDB] focus:outline-none focus:ring-1 focus:ring-[#1EAEDB]"
               />
             </div>
           </div>
@@ -211,13 +211,13 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
               Visit Date <span className="text-red-500">*</span>
             </label>
             <div className="relative">
-              <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1EAEDB]" />
               <input
                 id="visitDate"
                 type="date"
                 value={visitDate}
                 onChange={(e) => setVisitDate(e.target.value)}
-                className="pl-10 w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm"
+                className="pl-10 w-full h-10 rounded-md border border-[#1EAEDB]/20 bg-white px-3 py-2 text-sm focus:border-[#1EAEDB] focus:outline-none focus:ring-1 focus:ring-[#1EAEDB]"
                 min={new Date().toISOString().split('T')[0]}
                 required
               />
@@ -230,28 +230,28 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
       <div className="hidden md:block w-px bg-border h-auto mx-auto" />
       
       {/* Ticket Selection */}
-      <div>
-        <h3 className="text-lg font-medium mb-4">Select Tickets</h3>
+      <div className="bg-white p-5 rounded-lg shadow-md">
+        <h3 className="text-lg font-bold text-[#1EAEDB] mb-4">Select Tickets</h3>
         <div className="space-y-4">
           {tickets.map((ticket, index) => (
-            <div key={ticket.name} className="flex items-center justify-between">
+            <div key={ticket.name} className="flex items-center justify-between p-3 border-b border-[#f3f3f3]">
               <div>
                 <p className="font-medium">{ticket.name}</p>
-                <p className="text-sm text-muted-foreground">₹{ticket.price.toFixed(2)}</p>
+                <p className="text-sm text-[#1EAEDB] font-bold">₹{ticket.price.toFixed(2)}</p>
               </div>
               <div className="flex items-center gap-3">
                 <button
                   type="button"
                   onClick={() => updateTicketCount(index, false)}
-                  className="w-8 h-8 flex items-center justify-center rounded-full bg-muted hover:bg-muted/80"
+                  className="w-8 h-8 flex items-center justify-center rounded-full bg-[#f3f3f3] hover:bg-[#e3e3e3] text-[#1EAEDB]"
                 >
                   <Minus className="h-4 w-4" />
                 </button>
-                <span className="w-6 text-center">{ticket.count}</span>
+                <span className="w-6 text-center font-bold">{ticket.count}</span>
                 <button
                   type="button"
                   onClick={() => updateTicketCount(index, true)}
-                  className="w-8 h-8 flex items-center justify-center rounded-full bg-muted hover:bg-muted/80"
+                  className="w-8 h-8 flex items-center justify-center rounded-full bg-[#1EAEDB] hover:bg-[#33C3F0] text-white"
                 >
                   <Plus className="h-4 w-4" />
                 </button>
@@ -260,12 +260,12 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
           ))}
         </div>
         
-        <div className="mt-6 pt-4 border-t border-border">
+        <div className="mt-6 pt-4 border-t border-[#f3f3f3]">
           <div className="flex justify-between text-sm mb-2">
             <span>Total Tickets:</span>
-            <span>{totalTickets}</span>
+            <span className="font-bold">{totalTickets}</span>
           </div>
-          <div className="flex justify-between font-bold text-lg">
+          <div className="flex justify-between font-bold text-lg text-[#1EAEDB]">
             <span>Total Amount:</span>
             <span>₹{totalAmount.toFixed(2)}</span>
           </div>
@@ -275,7 +275,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
           type="submit"
           onClick={handleSubmit}
           disabled={totalTickets === 0}
-          className="w-full mt-6 px-6 py-3 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full mt-6 px-6 py-3 rounded-lg bg-[#1EAEDB] text-white hover:bg-[#33C3F0] font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           Proceed to Payment
         </button>

@@ -31,6 +31,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
   const [visitDate, setVisitDate] = useState("");
   const [showQr, setShowQr] = useState(false);
   const [bookingComplete, setBookingComplete] = useState(false);
+  const [isSendingSms, setIsSendingSms] = useState(false);
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
   
   const [tickets, setTickets] = useState<TicketType[]>([
     { name: "Adults", price: 499, count: 0 },
@@ -75,7 +77,63 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
     setShowQr(true);
   };
 
-  const handlePaymentSuccess = () => {
+  // Function to send SMS
+  const sendSms = async (details: BookingDetails) => {
+    setIsSendingSms(true);
+    try {
+      // In a real application, this would be an API call to your SMS service
+      console.log("Sending SMS to:", details.mobile, "with booking details");
+      
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      toast({
+        title: "SMS Sent",
+        description: "Booking details have been sent to your mobile number.",
+        variant: "default",
+      });
+    } catch (error) {
+      console.error("Failed to send SMS:", error);
+      toast({
+        title: "SMS Failed",
+        description: "Could not send booking details to your mobile. Please save your booking ID.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSendingSms(false);
+    }
+  };
+
+  // Function to send Email
+  const sendEmail = async (details: BookingDetails) => {
+    if (!details.email) return;
+    
+    setIsSendingEmail(true);
+    try {
+      // In a real application, this would be an API call to your email service
+      console.log("Sending email to:", details.email, "with booking details");
+      
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      toast({
+        title: "Email Sent",
+        description: "Booking details have been sent to your email.",
+        variant: "default",
+      });
+    } catch (error) {
+      console.error("Failed to send email:", error);
+      toast({
+        title: "Email Failed",
+        description: "Could not send booking details to your email. Please save your booking ID.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSendingEmail(false);
+    }
+  };
+
+  const handlePaymentSuccess = async () => {
     const bookingDetails: BookingDetails = {
       name,
       mobile,
@@ -87,9 +145,18 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
     
     console.log("Booking completed:", bookingDetails);
     
+    // Generate a random booking ID
+    const bookingId = Math.random().toString(36).substring(2, 10).toUpperCase();
+    
+    // Send notifications
+    await sendSms(bookingDetails);
+    if (email) {
+      await sendEmail(bookingDetails);
+    }
+    
     toast({
       title: "Booking Successful!",
-      description: "Your tickets have been booked successfully.",
+      description: `Your booking ID is ${bookingId}. Details sent to your mobile${email ? " and email" : ""}.`,
       variant: "default",
     });
     
@@ -112,7 +179,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
         <h3 className="text-xl font-bold mb-2">Booking Complete!</h3>
         <p className="text-muted-foreground text-center">
           Your booking for {totalTickets} tickets has been confirmed.<br />
-          We've sent the details to your phone.
+          We've sent the details to your phone{email ? " and email" : ""}.
         </p>
       </div>
     );
@@ -137,9 +204,10 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
           </button>
           <button 
             onClick={handlePaymentSuccess}
-            className="px-4 py-2 rounded-lg bg-[#1EAEDB] text-white hover:bg-[#33C3F0]"
+            disabled={isSendingSms || isSendingEmail}
+            className="px-4 py-2 rounded-lg bg-[#1EAEDB] text-white hover:bg-[#33C3F0] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            Confirm Payment
+            {(isSendingSms || isSendingEmail) ? "Processing..." : "Confirm Payment"}
           </button>
         </div>
       </div>

@@ -72,12 +72,10 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
       return;
     }
     
-    // Show QR code for payment
     setShowQr(true);
   };
 
   const handlePaymentSuccess = () => {
-    // Log booking details (in a real app, this would save to a database)
     const bookingDetails: BookingDetails = {
       name,
       mobile,
@@ -89,7 +87,6 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
     
     console.log("Booking completed:", bookingDetails);
     
-    // Show success message
     toast({
       title: "Booking Successful!",
       description: "Your tickets have been booked successfully.",
@@ -98,7 +95,6 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
     
     setBookingComplete(true);
     
-    // Close dialog after showing success for a while
     setTimeout(() => {
       onClose();
     }, 3000);
@@ -151,135 +147,132 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {/* Visitor Information */}
-      <div className="bg-[#f3f3f3] p-5 rounded-lg">
-        <h3 className="text-lg font-bold text-[#1EAEDB] mb-4">Visitor Information</h3>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
+    <div className="flex flex-col gap-4">
+      <h3 className="text-lg font-bold text-[#1EAEDB] mb-0">Book Your Visit</h3>
+      
+      {/* Two sections in a grid for better space usage */}
+      <div className="grid grid-cols-2 gap-4">
+        {/* Left section: Contact details */}
+        <div className="space-y-3">
+          <div>
             <label htmlFor="name" className="text-sm font-medium">
               Name <span className="text-red-500">*</span>
             </label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1EAEDB]" />
+              <User className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1EAEDB]" />
               <input
                 id="name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="pl-10 w-full h-10 rounded-md border border-[#1EAEDB]/20 bg-white px-3 py-2 text-sm focus:border-[#1EAEDB] focus:outline-none focus:ring-1 focus:ring-[#1EAEDB]"
+                className="pl-8 w-full h-9 rounded-md border border-[#1EAEDB]/20 bg-white px-3 py-1 text-sm focus:border-[#1EAEDB] focus:outline-none"
                 required
               />
             </div>
           </div>
           
-          <div className="space-y-2">
+          <div>
             <label htmlFor="mobile" className="text-sm font-medium">
-              Mobile Number <span className="text-red-500">*</span>
+              Mobile <span className="text-red-500">*</span>
             </label>
             <div className="relative">
-              <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1EAEDB]" />
+              <Phone className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1EAEDB]" />
               <input
                 id="mobile"
                 type="tel"
                 value={mobile}
                 onChange={(e) => setMobile(e.target.value)}
-                className="pl-10 w-full h-10 rounded-md border border-[#1EAEDB]/20 bg-white px-3 py-2 text-sm focus:border-[#1EAEDB] focus:outline-none focus:ring-1 focus:ring-[#1EAEDB]"
+                className="pl-8 w-full h-9 rounded-md border border-[#1EAEDB]/20 bg-white px-3 py-1 text-sm focus:border-[#1EAEDB] focus:outline-none"
                 required
               />
             </div>
           </div>
           
-          <div className="space-y-2">
+          <div>
             <label htmlFor="email" className="text-sm font-medium">
               Email (Optional)
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1EAEDB]" />
+              <Mail className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1EAEDB]" />
               <input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="pl-10 w-full h-10 rounded-md border border-[#1EAEDB]/20 bg-white px-3 py-2 text-sm focus:border-[#1EAEDB] focus:outline-none focus:ring-1 focus:ring-[#1EAEDB]"
+                className="pl-8 w-full h-9 rounded-md border border-[#1EAEDB]/20 bg-white px-3 py-1 text-sm focus:border-[#1EAEDB] focus:outline-none"
               />
             </div>
           </div>
           
-          <div className="space-y-2">
+          <div>
             <label htmlFor="visitDate" className="text-sm font-medium">
               Visit Date <span className="text-red-500">*</span>
             </label>
             <div className="relative">
-              <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1EAEDB]" />
+              <Calendar className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1EAEDB]" />
               <input
                 id="visitDate"
                 type="date"
                 value={visitDate}
                 onChange={(e) => setVisitDate(e.target.value)}
-                className="pl-10 w-full h-10 rounded-md border border-[#1EAEDB]/20 bg-white px-3 py-2 text-sm focus:border-[#1EAEDB] focus:outline-none focus:ring-1 focus:ring-[#1EAEDB]"
+                className="pl-8 w-full h-9 rounded-md border border-[#1EAEDB]/20 bg-white px-3 py-1 text-sm focus:border-[#1EAEDB] focus:outline-none"
                 min={new Date().toISOString().split('T')[0]}
                 required
               />
             </div>
           </div>
-        </form>
-      </div>
-      
-      {/* Vertical Separator */}
-      <div className="hidden md:block w-px bg-border h-auto mx-auto" />
-      
-      {/* Ticket Selection */}
-      <div className="bg-white p-5 rounded-lg shadow-md">
-        <h3 className="text-lg font-bold text-[#1EAEDB] mb-4">Select Tickets</h3>
-        <div className="space-y-4">
+        </div>
+        
+        {/* Right section: Ticket selection */}
+        <div className="space-y-3">
+          <h4 className="text-sm font-medium text-gray-700">Select Tickets</h4>
           {tickets.map((ticket, index) => (
-            <div key={ticket.name} className="flex items-center justify-between p-3 border-b border-[#f3f3f3]">
+            <div key={ticket.name} className="flex items-center justify-between py-1 border-b border-[#f3f3f3]">
               <div>
-                <p className="font-medium">{ticket.name}</p>
-                <p className="text-sm text-[#1EAEDB] font-bold">₹{ticket.price.toFixed(2)}</p>
+                <p className="text-sm font-medium">{ticket.name}</p>
+                <p className="text-xs text-[#1EAEDB] font-bold">₹{ticket.price.toFixed(2)}</p>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => updateTicketCount(index, false)}
-                  className="w-8 h-8 flex items-center justify-center rounded-full bg-[#f3f3f3] hover:bg-[#e3e3e3] text-[#1EAEDB]"
+                  className="w-6 h-6 flex items-center justify-center rounded-full bg-[#f3f3f3] hover:bg-[#e3e3e3] text-[#1EAEDB]"
                 >
-                  <Minus className="h-4 w-4" />
+                  <Minus className="h-3 w-3" />
                 </button>
-                <span className="w-6 text-center font-bold">{ticket.count}</span>
+                <span className="w-4 text-center text-sm font-bold">{ticket.count}</span>
                 <button
                   type="button"
                   onClick={() => updateTicketCount(index, true)}
-                  className="w-8 h-8 flex items-center justify-center rounded-full bg-[#1EAEDB] hover:bg-[#33C3F0] text-white"
+                  className="w-6 h-6 flex items-center justify-center rounded-full bg-[#1EAEDB] hover:bg-[#33C3F0] text-white"
                 >
-                  <Plus className="h-4 w-4" />
+                  <Plus className="h-3 w-3" />
                 </button>
               </div>
             </div>
           ))}
-        </div>
-        
-        <div className="mt-6 pt-4 border-t border-[#f3f3f3]">
-          <div className="flex justify-between text-sm mb-2">
-            <span>Total Tickets:</span>
-            <span className="font-bold">{totalTickets}</span>
+          
+          <div className="pt-2 border-t border-[#f3f3f3]">
+            <div className="flex justify-between text-xs mb-1">
+              <span>Total Tickets:</span>
+              <span className="font-bold">{totalTickets}</span>
+            </div>
+            <div className="flex justify-between font-bold text-base text-[#1EAEDB]">
+              <span>Total Amount:</span>
+              <span>₹{totalAmount.toFixed(2)}</span>
+            </div>
           </div>
-          <div className="flex justify-between font-bold text-lg text-[#1EAEDB]">
-            <span>Total Amount:</span>
-            <span>₹{totalAmount.toFixed(2)}</span>
-          </div>
         </div>
-        
-        <button
-          type="submit"
-          onClick={handleSubmit}
-          disabled={totalTickets === 0}
-          className="w-full mt-6 px-6 py-3 rounded-lg bg-[#1EAEDB] text-white hover:bg-[#33C3F0] font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        >
-          Proceed to Payment
-        </button>
       </div>
+      
+      <button
+        type="submit"
+        onClick={handleSubmit}
+        disabled={totalTickets === 0}
+        className="w-full mt-2 px-4 py-2 rounded-lg bg-[#1EAEDB] text-white hover:bg-[#33C3F0] font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+      >
+        Proceed to Payment
+      </button>
     </div>
   );
 };

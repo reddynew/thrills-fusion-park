@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import BookingForm from './BookingForm';
@@ -86,13 +85,9 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Booking Dialog */}
+      {/* Booking Dialog - updated to be more compact */}
       <Dialog open={showBookingDialog} onOpenChange={setShowBookingDialog}>
-        <DialogContent className="sm:max-w-[700px]">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-bold text-[#1EAEDB]">Book Your Visit</DialogTitle>
-            <DialogDescription>Fill in your details to book tickets for your visit</DialogDescription>
-          </DialogHeader>
+        <DialogContent className="sm:max-w-[600px] p-4">
           <BookingForm onClose={() => setShowBookingDialog(false)} />
         </DialogContent>
       </Dialog>

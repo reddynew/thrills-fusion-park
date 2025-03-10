@@ -7,6 +7,7 @@ import UpcomingEvents from '../components/UpcomingEvents';
 import Reviews from '../components/Reviews';
 import SocialFeed from '../components/SocialFeed';
 import Footer from '../components/Footer';
+import { Toaster } from '@/components/ui/toaster';
 
 const Index = () => {
   useEffect(() => {
@@ -23,6 +24,7 @@ const Index = () => {
       <Reviews />
       <SocialFeed />
       <Footer />
+      <Toaster />
     </div>
   );
 };

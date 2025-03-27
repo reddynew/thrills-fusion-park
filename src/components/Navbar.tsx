@@ -24,12 +24,19 @@ const Navbar = () => {
   return (
     <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-md py-2' : 'bg-transparent py-4'}`}>
       <div className="container mx-auto px-6 flex items-center justify-between">
-        {/* Logo */}
-        <a href="#" className="relative z-10">
-          <h1 className={`font-bold text-2xl md:text-3xl ${isScrolled ? 'text-primary' : 'text-white'}`}>
-            THRILLS<span className="text-secondary">FUSION</span>
-          </h1>
-        </a>
+      <a href="#" className="relative z-10 flex items-center space-x-2">
+  {/* Logo Image */}
+  <img 
+    src="/freepik__thrillsfusion-adventure-theme-park-logo-a-vintages__88164.png" 
+    alt="logo" 
+    className="h-20 w-20 object-contain" 
+  />
+  
+  {/* Text */}
+  <h1 className={`font-bold text-2xl md:text-3xl ${isScrolled ? 'text-br1' : 'text-secondary'}`}>
+    THRILLS<span className="text-secondary">FUSION</span>
+  </h1>
+</a>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">

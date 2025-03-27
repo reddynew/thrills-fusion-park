@@ -2,6 +2,9 @@
 import React, { useState } from 'react';
 import { Calendar, MapPin, Clock, Ticket } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { toast } from 'sonner';
+import QRCode from 'react-qr-code';
+import { useToast } from '@/hooks/use-toast';
 
 interface EventProps {
   title: string;
@@ -21,12 +24,11 @@ interface TicketOption {
 
 const EventCard: React.FC<EventProps> = ({ title, date, time, location, description, imageSrc, delay }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [showQr, setShowQr] = useState(false);
   const [ticketOptions, setTicketOptions] = useState<TicketOption[]>([
-    { type: "Adult", price: 49.99, quantity: 0 },
-    { type: "Child (5-12)", price: 29.99, quantity: 0 },
-    { type: "Senior (65+)", price: 39.99, quantity: 0 }
+    { type: "spots", price: 499, quantity: 0 }
   ]);
-
+ 
   const updateTicketQuantity = (index: number, newQuantity: number) => {
     const newOptions = [...ticketOptions];
     newOptions[index].quantity = Math.max(0, newQuantity);
@@ -35,6 +37,35 @@ const EventCard: React.FC<EventProps> = ({ title, date, time, location, descript
 
   const totalPrice = ticketOptions.reduce((sum, option) => sum + (option.price * option.quantity), 0);
   const totalTickets = ticketOptions.reduce((sum, option) => sum + option.quantity, 0);
+  const upiId = '7793996111@ybl';
+  const upiPaymentString = `upi://pay?pa=${upiId}&am=${totalPrice}&cu=INR`;
+  const [paymentMethod, setPaymentMethod] = useState<'upi' | 'razorpay'>('upi');
+  const {toast}=useToast();
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (paymentMethod === 'razorpay') {
+      // Handle Razorpay Payment
+      toast({
+        title: "Razorpay Payment",
+        description: "Razorpay payment gateway is not implemented in this demo.",
+        variant: "destructive",
+      });
+      return
+    } else {
+      setShowQr(true);
+    }
+  };
+  
+  const handlePaymentSuccess = () => {
+    toast({
+      title: "Payment successful!",
+      description: "Tickets booked successfully.",
+      variant: "default",
+    });
+    setShowQr(false);
+    setIsDialogOpen(false);
+  };
 
   return (
     <>
@@ -45,7 +76,7 @@ const EventCard: React.FC<EventProps> = ({ title, date, time, location, descript
             alt={title} 
             className="w-full h-full object-cover"
           />
-          <div className="absolute top-3 right-3 bg-primary/90 text-white px-3 py-1 rounded-full text-sm font-semibold">
+          <div className="absolute top-3 right-3  adventure-blink text-white px-3 py-1 rounded-full text-sm font-semibold">
             Upcoming
           </div>
         </div>
@@ -74,10 +105,10 @@ const EventCard: React.FC<EventProps> = ({ title, date, time, location, descript
           
           <button 
             onClick={() => setIsDialogOpen(true)}
-            className="inline-flex items-center justify-center gap-2 bg-primary/20 hover:bg-primary/30 text-primary font-medium py-2 px-4 rounded-lg transition-colors"
+            className="inline-flex items-center justify-center gap-2 bg-br/70 hover:bg-primary/30 text-white font-medium py-2 px-4 rounded-lg transition-colors"
           >
             <Ticket className="w-4 h-4" />
-            Book Tickets
+            Register
           </button>
         </div>
       </div>
@@ -91,72 +122,127 @@ const EventCard: React.FC<EventProps> = ({ title, date, time, location, descript
             </DialogDescription>
           </DialogHeader>
           
-          <div className="py-4">
-            <h3 className="text-lg font-medium mb-3">Select Tickets</h3>
-            
-            <div className="space-y-4">
-              {ticketOptions.map((option, index) => (
-                <div key={option.type} className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium">{option.type}</p>
-                    <p className="text-sm text-muted-foreground">${option.price.toFixed(2)}</p>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <button 
-                      onClick={() => updateTicketQuantity(index, option.quantity - 1)}
-                      className="w-8 h-8 flex items-center justify-center rounded-full bg-secondary/60 hover:bg-secondary text-primary"
-                    >
-                      -
-                    </button>
-                    
-                    <span className="w-6 text-center">{option.quantity}</span>
-                    
-                    <button 
-                      onClick={() => updateTicketQuantity(index, option.quantity + 1)}
-                      className="w-8 h-8 flex items-center justify-center rounded-full bg-secondary/60 hover:bg-secondary text-primary"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-            <div className="my-6 pt-4 border-t">
-              <div className="flex justify-between mb-2">
-                <span>Total Tickets:</span>
-                <span>{totalTickets}</span>
-              </div>
-              <div className="flex justify-between font-bold text-lg">
-                <span>Total Price:</span>
-                <span>${totalPrice.toFixed(2)}</span>
-              </div>
-            </div>
-            
-            <div className="flex justify-end gap-3 mt-6">
-              <button 
-                onClick={() => setIsDialogOpen(false)}
-                className="px-4 py-2 rounded-lg bg-secondary/80 hover:bg-secondary text-primary"
-              >
-                Cancel
-              </button>
+          {!showQr ? (
+            <div className="py-4">
+              <h3 className="text-lg font-medium mb-3">Select Tickets</h3>
               
-              <button 
-                onClick={() => {
-                  // This would connect to a payment system in a real application
-                  if (totalTickets > 0) {
-                    alert(`Booking confirmed! ${totalTickets} tickets purchased for $${totalPrice.toFixed(2)}`);
-                    setIsDialogOpen(false);
-                  }
-                }}
-                disabled={totalTickets === 0}
-                className="px-6 py-2 rounded-lg bg-primary text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Proceed to Payment
-              </button>
+              <div className="space-y-4">
+                {ticketOptions.map((option, index) => (
+                  <div key={option.type} className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">Ticket</p>
+                      <p className="text-sm text-muted-foreground">Entry: {option.price.toFixed(2)} INR per spot</p>
+                    </div>
+                    
+                    <div className="flex items-center gap-3">
+                      <button 
+                        onClick={() => updateTicketQuantity(index, option.quantity - 1)}
+                        className="w-8 h-8 flex items-center justify-center rounded-full bg-secondary/60 hover:bg-secondary text-black"
+                        type="button"
+                      >
+                        -
+                      </button>
+                      
+                      <span className="w-6 text-center">{option.quantity}</span>
+                      
+                      <button 
+                        onClick={() => updateTicketQuantity(index, option.quantity + 1)}
+                        className="w-8 h-8 flex items-center justify-center rounded-full bg-secondary/60 hover:bg-secondary text-black"
+                        type="button"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="my-6 pt-4 border-t">
+                <div className="flex justify-between mb-2">
+                  <span>Total Tickets:</span>
+                  <span>{totalTickets}</span>
+                </div>
+                <div className="flex justify-between font-bold text-lg">
+                  <span>Total Price:</span>
+                  <span>INR {totalPrice.toFixed(2)}</span>
+                </div>
+              </div>
+              
+              
+              <div className="mt-6 border-t pt-4">
+                <h4 className="font-medium mb-3">Select Payment Method</h4>
+                <div className="flex space-x-4 mb-4">
+                  <button
+                    type="button"
+                    onClick={() => setPaymentMethod('upi')}
+                    className={`px-4 py-2 rounded-lg border ${
+                      paymentMethod === 'upi' 
+                        ? 'bg-primary/90 text-white border-primary' 
+                        : 'bg-secondary/60 text-white border-input'
+                    }`}
+                  >
+                    UPI Payment
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPaymentMethod('razorpay')}
+                    className={`px-4 py-2 rounded-lg border ${
+                      paymentMethod === 'razorpay' 
+                        ? 'bg-primary/90 text-white border-primary' 
+                        : 'bg-secondary/60 text-white border-input'
+                    }`}
+                  >
+                    Card/Netbanking
+                  </button>
+                </div>
+              </div>
+              
+              <div className="flex justify-end gap-3 mt-7">
+                <button 
+                  onClick={() => setIsDialogOpen(false)}
+                  className="px-4 py-2 rounded-lg bg-black/80 hover:bg-black text-white"
+                  type="button"
+                >
+                  Cancel
+                </button>
+                
+                <button 
+                  onClick={handleSubmit}
+                  disabled={totalTickets === 0}
+                  className="px-4 py-2 rounded-lg bg-black/80 hover:bg-black text-white disabled:cursor-not-allowed"
+                  type="button"
+                >
+                  Proceed to Pay
+                </button>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-6">
+              <h3 className="text-lg font-medium mb-4">Scan to Pay ₹{totalPrice.toFixed(2)}</h3>
+              <div className="bg-white p-4 rounded-lg mb-6">
+                <QRCode value={upiPaymentString} size={200} />
+              </div>
+              <p className="text-sm text-muted-foreground mb-6">
+                UPI ID: {upiId}
+              </p>
+              <div className="flex gap-4">
+                <button 
+                  onClick={() => setShowQr(false)}
+                  className="px-4 py-2 rounded-lg border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+                  type="button"
+                >
+                  Back
+                </button>
+                <button 
+                  onClick={handlePaymentSuccess}
+                  className="px-4 py-2 rounded-lg bg-primary text-white hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  type="button"
+                >
+                  Confirm Payment
+                </button>
+              </div>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </>
@@ -195,16 +281,16 @@ const UpcomingEvents = () => {
   ];
 
   return (
-    <section id="upcoming-events" className="relative py-20 md:py-28">
+    <section id="upcoming-events" className="relative">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-accent/5 to-background -z-10" />
       
-      <div className="section-container">
-        <div className="text-center mb-16">
-          <h2 className="section-title relative inline-block">
+      <div className="container mx-auto px-4 py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-6 relative inline-block">
             Upcoming Events
-            <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-accent rounded-full"></div>
+            <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-primary rounded-full"></div>
           </h2>
-          <p className="section-subtitle">
+          <p className="text-muted-foreground max-w-2xl mx-auto">
             Don't miss our special events and limited-time experiences
           </p>
         </div>
@@ -227,7 +313,7 @@ const UpcomingEvents = () => {
         <div className="flex justify-center mt-12">
           <a 
             href="#" 
-            className="glass-card px-8 py-4 rounded-full bg-gradient-to-r from-accent to-primary text-white font-semibold text-lg transition-all duration-300 hover:shadow-lg hover:shadow-accent/20 hover:scale-105"
+            className="px-8 py-4 rounded-full bg-gradient-to-r from-primary/80 to-primary text-white font-semibold text-lg transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 hover:scale-105"
           >
             View All Events
           </a>

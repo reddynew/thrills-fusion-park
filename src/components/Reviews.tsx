@@ -95,8 +95,8 @@ const Reviews = () => {
   };
   
   return (
-    <section id="reviews" className="py-20 md:py-28 bg-primary/5">
-      <div className="section-container">
+    <section id="reviews" className="bg-primary/5">
+      <div className="section-container py-10 md:py-16">
         <div className="text-center mb-16">
           <h2 className="section-title relative inline-block">
             Customer Reviews

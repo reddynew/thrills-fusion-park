@@ -82,11 +82,11 @@ const ThrillingZones = () => {
   ];
 
   return (
-    <section id="thrilling-zones" className="relative py-20 md:py-28">
+    <section id="thrilling-zones" className="relative">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background -z-10" />
       
       <div className="section-container">
-        <div className="text-center mb-16">
+        <div className="text-center mb-5">
           <h2 className="section-title relative inline-block">
             Thrilling Zones
             <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-secondary rounded-full"></div>

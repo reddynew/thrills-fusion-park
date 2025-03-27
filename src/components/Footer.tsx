@@ -4,8 +4,8 @@ import { Facebook, Instagram, Twitter, MapPin, Phone, Mail } from 'lucide-react'
 
 const Footer = () => {
   return (
-    <footer className="bg-primary text-white pt-16">
-      <div className="section-container">
+    <footer className="bg-primary text-white pt-10">
+      <div className="section-container1">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* About */}
           <div>
@@ -76,15 +76,17 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-start">
                 <MapPin className="w-5 h-5 mr-3 mt-1 text-secondary" />
-                <span className="text-white/80">123 Adventure Lane, Thrill City, TC 12345</span>
+                <span className="text-white/80">Thrills Fusion opening soon</span>
               </li>
               <li className="flex items-center">
                 <Phone className="w-5 h-5 mr-3 text-secondary" />
-                <span className="text-white/80">+1 (555) 123-4567</span>
+                <span className="text-white/80">+91 1234567890</span>
               </li>
               <li className="flex items-center">
                 <Mail className="w-5 h-5 mr-3 text-secondary" />
-                <span className="text-white/80">info@thrillsfusion.com</span>
+                <a href="mailto:info@thrillsfusion.com">
+                  <span className="text-white/80">info@thrillsfusion.com</span>
+                </a>
               </li>
             </ul>
           </div>

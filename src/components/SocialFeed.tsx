@@ -53,7 +53,7 @@ const SocialFeed = () => {
   ];
   
   return (
-    <section id="social" className="py-20 md:py-28">
+    <section id="social" className="relative">
       <div className="section-container">
         <div className="text-center mb-16">
           <h2 className="section-title relative inline-block">

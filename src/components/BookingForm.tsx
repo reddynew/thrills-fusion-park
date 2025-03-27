@@ -470,6 +470,7 @@ const handlenav=()=>{
           {/* <button
             type="button"
             onClick={handlenav}
+            
             className="px-6 py-3 rounded-lg bg-black/80 hover:bg-black text-white text-lg" // Adjusted padding and text size
           >
             Cancel

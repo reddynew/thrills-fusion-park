@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import { Calendar, User, Phone, Mail, Plus, Minus, Check } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import QRCode from 'react-qr-code';
+
 import { Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { set } from 'date-fns';
+
 
 interface BookingFormProps {
   onClose: () => void;
@@ -32,6 +34,7 @@ declare global {
   }
 }
 
+
 const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
   const { toast } = useToast();
   const [name, setName] = useState("");
@@ -42,8 +45,10 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
   const [bookingComplete, setBookingComplete] = useState(false);
   const [isSendingSms, setIsSendingSms] = useState(false);
   const [isSendingEmail, setIsSendingEmail] = useState(false);
+
   const [paymentMethod, setPaymentMethod] = useState<'upi' | 'razorpay'>('upi');
   const [success,setSuccess]=useState(true);
+
   const [tickets, setTickets] = useState<TicketType[]>([
     { name: "Adults", price: 499, count: 0 },
     { name: "Children (5-12 yrs)", price: 299, count: 0 },
@@ -53,6 +58,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
   const totalAmount = tickets.reduce((sum, ticket) => sum + (ticket.price * ticket.count), 0);
   const totalTickets = tickets.reduce((sum, ticket) => sum + ticket.count, 0);
   const navigate=useNavigate();
+
 
   const updateTicketCount = (index: number, increment: boolean) => {
     const newTickets = [...tickets];
@@ -75,7 +81,6 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
       });
       return;
     }
-
     if (totalTickets === 0) {
       toast({
         title: "No tickets selected",
@@ -84,11 +89,13 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
       });
       return;
     }
+
     if (paymentMethod === 'razorpay') {
       handlePayment();
       return;
     }
     else
+
     setShowQr(true);
   };
 
@@ -181,9 +188,14 @@ const BookingForm: React.FC<BookingFormProps> = ({ onClose }) => {
       onClose();
     }, 3000);
   };
+
 const upiId='7793996111@ybl'
   // Generate UPI payment string
-  const upiPaymentString = `upi://pay?pa=${upiId}&am=${totalAmount}&cu=INR`;
+  // const upiPaymentString = `upi://pay?pa=${upiId}&am=${totalAmount}&cu=INR`;
+
+  // Generate UPI payment string
+  const upiPaymentString = `upi://pay?pa=7793996111@upi&pn=ThrillsFusion&am=${totalAmount.toFixed(2)}&cu=INR&tn=Ticket booking for ${totalTickets} persons`;
+
   if (bookingComplete) {
     return (
       <div className="flex flex-col items-center justify-center py-6">
@@ -207,7 +219,11 @@ const upiId='7793996111@ybl'
           <QRCode value={upiPaymentString} size={200} />
         </div>
         <p className="text-sm text-muted-foreground mb-6">
+
           UPI ID: 7793996111@ybl
+
+          UPI ID: 7793996111
+
         </p>
         <div className="flex gap-4">
           <button 
@@ -219,7 +235,9 @@ const upiId='7793996111@ybl'
           <button 
             onClick={handlePaymentSuccess}
             disabled={isSendingSms || isSendingEmail}
+
             className="px-4 py-2 rounded-lg bg-br1 text-white hover:bg-[#33C3F0] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+
           >
             {(isSendingSms || isSendingEmail) ? "Processing..." : "Confirm Payment"}
           </button>
@@ -288,13 +306,14 @@ const upiId='7793996111@ybl'
     }
 };
 
+const handlenav=()=>{
+  onClose()
+}
 
 
   return (
-    success ? (
     <div className="flex flex-col gap-4">
       <h3 className="text-lg font-bold text-br1 mb-0">Book Your Visit</h3>
-      
       {/* Two sections in a grid for better space usage */}
       <div className="grid grid-cols-2 gap-4">
         {/* Left section: Contact details */}
@@ -315,7 +334,7 @@ const upiId='7793996111@ybl'
               />
             </div>
           </div>
-          
+
           <div>
             <label htmlFor="mobile" className="text-sm font-medium">
               Mobile <span className="text-red-500">*</span>
@@ -332,7 +351,7 @@ const upiId='7793996111@ybl'
               />
             </div>
           </div>
-          
+
           <div>
             <label htmlFor="email" className="text-sm font-medium">
               Email (Optional)
@@ -348,7 +367,7 @@ const upiId='7793996111@ybl'
               />
             </div>
           </div>
-          
+
           <div>
             <label htmlFor="visitDate" className="text-sm font-medium">
               Visit Date <span className="text-red-500">*</span>
@@ -361,21 +380,26 @@ const upiId='7793996111@ybl'
                 value={visitDate}
                 onChange={(e) => setVisitDate(e.target.value)}
                 className="pl-8 w-full h-9 rounded-md border border-br1/20 bg-white px-3 py-1 text-sm focus:border-br1 focus:outline-none"
-                min={new Date().toISOString().split('T')[0]}
+                min={new Date().toISOString().split("T")[0]}
                 required
               />
             </div>
           </div>
         </div>
-        
+
         {/* Right section: Ticket selection */}
         <div className="space-y-3">
           <h4 className="text-sm font-medium text-gray-700">Select Tickets</h4>
           {tickets.map((ticket, index) => (
-            <div key={ticket.name} className="flex items-center justify-between py-1 border-b border-[#f3f3f3]">
+            <div
+              key={ticket.name}
+              className="flex items-center justify-between py-1 border-b border-[#f3f3f3]"
+            >
               <div>
                 <p className="text-sm font-medium">{ticket.name}</p>
-                <p className="text-xs text-br1 font-bold">₹{ticket.price.toFixed(2)}</p>
+                <p className="text-xs text-br1 font-bold">
+                  ₹{ticket.price.toFixed(2)}
+                </p>
               </div>
               <div className="flex items-center gap-2">
                 <button
@@ -385,7 +409,9 @@ const upiId='7793996111@ybl'
                 >
                   <Minus className="h-3 w-3" />
                 </button>
-                <span className="w-4 text-center text-sm font-bold">{ticket.count}</span>
+                <span className="w-4 text-center text-sm font-bold">
+                  {ticket.count}
+                </span>
                 <button
                   type="button"
                   onClick={() => updateTicketCount(index, true)}
@@ -396,69 +422,86 @@ const upiId='7793996111@ybl'
               </div>
             </div>
           ))}
-          
+
           <div className="pt-2 border-t border-[#f3f3f3]">
             <div className="flex justify-between text-xs mb-1">
               <span>Total Tickets:</span>
               <span className="font-bold">{totalTickets}</span>
             </div>
+
             <div className="flex justify-between font-bold text-base text-br1">
-              <span>Total Amount:</span>
-              <span>₹{totalAmount.toFixed(2)}</span>
+              <div className="flex justify-between font-bold text-base text-[#1EAEDB]">
+                <span>Total Amount:</span>
+                <span>₹{totalAmount.toFixed(2)}</span>
+              </div>
             </div>
           </div>
         </div>
+
+        <div className="mt-6 border-t pt-4">
+          <h4 className="font-medium mb-3">Select Payment Method</h4>
+          <div className="flex space-x-4 mb-2">
+            <button
+              type="button"
+              onClick={() => setPaymentMethod("upi")}
+              className={`px-4 py-2 rounded-lg border ${
+                paymentMethod === "upi"
+                  ? "bg-br1/90 text-white border-white"
+                  : "bg-secondary/60 text-white border-input"
+              }`}
+            >
+              UPI Payment
+            </button>
+            <button
+              type="button"
+              onClick={() => setPaymentMethod("razorpay")}
+              className={`px-4 py-2 rounded-lg border ${
+                paymentMethod === "razorpay"
+                  ? "bg-br1/90 text-white border-white"
+                  : "bg-secondary/60 text-white border-input"
+              }`}
+            >
+              Card/Netbanking
+            </button>
+          </div>
+        </div>
+
+        <div className="flex justify-end space-x-4 ">
+          {/* <button
+            type="button"
+            onClick={handlenav}
+            className="px-6 py-3 rounded-lg bg-black/80 hover:bg-black text-white text-lg" // Adjusted padding and text size
+          >
+            Cancel
+          </button> */}
+          {/* <button
+            type="button"
+            onClick={handleSubmit}
+            className="px-6 py-3 rounded-lg bg-black/80 hover:bg-black text-white text-lg" // Adjusted padding and text size
+          >
+            Proceed
+          </button> */}
+        </div>
       </div>
-      
-      <div className="mt-6 border-t pt-4">
-                <h4 className="font-medium mb-3">Select Payment Method</h4>
-                <div className="flex space-x-4 mb-2">
-                  <button
-                    type="button"
-                    onClick={() => setPaymentMethod('upi')}
-                    className={`px-4 py-2 rounded-lg border ${
-                      paymentMethod === 'upi' 
-                        ? 'bg-br1/90 text-white border-white' 
-                        : 'bg-secondary/60 text-white border-input'
-                    }`}
-                   >
-                    UPI Payment
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setPaymentMethod('razorpay')}
-                    className={`px-4 py-2 rounded-lg border ${
-                      paymentMethod === 'razorpay' 
-                        ? 'bg-br1/90 text-white border-white' 
-                        : 'bg-secondary/60 text-white border-input'
-                    }`}
-                  >
-                    Card/Netbanking
-                  </button>
-                </div>
-              </div>
-             
-            
-                <div className="flex justify-end space-x-4">
-                  <button
-                    type="button"
-                    onClick={() => navigate('/')}
-                  className="px-4 py-2 rounded-lg bg-black/80 hover:bg-black text-white"
-                   
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleSubmit}
-                    className="px-4 py-2 rounded-lg bg-black/80 hover:bg-black text-white"
-                     >
-                    Proceed  
-                  </button>
-                </div>
-              
-    </div>):(<div>successful booking</div>)
+
+      <button
+        type="submit"
+        onClick={handleSubmit}
+        disabled={totalTickets === 0}
+        className="w-full mt-2 px-4 py-2 rounded-lg bg-[#1EAEDB] text-white hover:bg-[#33C3F0] font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+      >
+        Proceed to Payment
+      </button>
+      <button
+            type="button"
+            onClick={handlenav}
+        className="w-full mt-2 px-4 py-2 rounded-lg bg-[#1EAEDB] text-white hover:bg-[#33C3F0] font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            Cancel
+          </button>
+    </div>
   );
 };
+
 
 export default BookingForm;

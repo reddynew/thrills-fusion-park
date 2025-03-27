@@ -64,9 +64,9 @@ const Hero = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a 
             href="#thrilling-zones"
-            className="px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm text-white border border-white/20 font-semibold text-lg transition-all duration-300 hover:bg-white/20 hover:scale-105"
+            className="glass-card px-8 py-4 rounded-full bg-gradient-to-r from-primary to-accent text-white font-semibold text-lg transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 hover:scale-105"
           >
-            Explore More
+            Explore Activities
           </a>
           <a 
             href="#location"

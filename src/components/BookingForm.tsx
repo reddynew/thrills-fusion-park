@@ -450,7 +450,7 @@ const handlenav=()=>{
                   : "bg-secondary/60 text-white border-input"
               }`}
             >
-              UPI Payments
+              UPI Payment
             </button>
             <button
               type="button"

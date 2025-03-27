@@ -205,7 +205,7 @@ const upiId='7793996111@ybl'
         <h3 className="text-xl font-bold mb-2">Booking Complete!</h3>
         <p className="text-muted-foreground text-center">
           Your booking for {totalTickets} tickets has been confirmed.<br />
-          We've sent the details to your phone{email ? " and email" : ""}.
+          We've sent the details to your phone{email ? " and email" : ""}
         </p>
       </div>
     );
